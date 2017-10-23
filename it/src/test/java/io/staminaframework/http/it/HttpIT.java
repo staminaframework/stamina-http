@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -49,6 +50,7 @@ import static org.ops4j.pax.exam.cm.ConfigurationAdminOptions.newConfiguration;
  */
 @RunWith(PaxExam.class)
 public class HttpIT {
+    private static final int port = 8090;
     @Inject
     private BundleContext bundleContext;
 
@@ -57,7 +59,7 @@ public class HttpIT {
         return options(
                 newConfiguration("org.apache.felix.http")
                         .put("org.apache.felix.http.host", "localhost")
-                        .put("org.osgi.service.http.port", "8080")
+                        .put("org.osgi.service.http.port", port)
                         .asOption(),
                 staminaDistribution(),
                 mavenBundle("org.apache.felix", "org.apache.felix.http.servlet-api").versionAsInProject().startLevel(5),
@@ -83,7 +85,7 @@ public class HttpIT {
         servletProps.put(HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_PATTERN, "/helloworld");
         bundleContext.registerService(Servlet.class, servlet, servletProps);
 
-        final URL servletUrl = new URL("http://localhost:8080/helloworld");
+        final URL servletUrl = createUrl("/helloworld");
         final StringBuilder resp = new StringBuilder(32);
         try (final Reader in = new InputStreamReader(new BufferedInputStream(servletUrl.openStream()))) {
             final char[] buf = new char[32];
@@ -94,5 +96,9 @@ public class HttpIT {
 
         assertTrue(resp.length() > 0);
         assertEquals("Hello world!", resp.toString());
+    }
+
+    private URL createUrl(String path) throws MalformedURLException {
+        return new URL("http://localhost:" + port + path);
     }
 }
