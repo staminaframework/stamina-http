@@ -39,9 +39,7 @@ import java.util.Hashtable;
 import static io.staminaframework.starter.it.StaminaOptions.staminaDistribution;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
-import static org.ops4j.pax.exam.cm.ConfigurationAdminOptions.newConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 /**
  * Integration tests for Stamina HTTP addon.
@@ -57,10 +55,8 @@ public class HttpIT {
     @Configuration
     public Option[] config() throws IOException {
         return options(
-                newConfiguration("org.apache.felix.http")
-                        .put("org.apache.felix.http.host", "localhost")
-                        .put("org.osgi.service.http.port", port)
-                        .asOption(),
+                frameworkProperty("org.apache.felix.http.host").value("localhost"),
+                frameworkProperty("org.osgi.service.http.port").value(String.valueOf(port)),
                 staminaDistribution(),
                 mavenBundle("org.apache.felix", "org.apache.felix.http.servlet-api").versionAsInProject().startLevel(5),
                 mavenBundle("org.apache.felix", "org.apache.felix.http.api").versionAsInProject().startLevel(5),
