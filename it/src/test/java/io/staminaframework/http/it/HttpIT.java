@@ -36,7 +36,7 @@ import java.net.URL;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-import static io.staminaframework.starter.it.StaminaOptions.staminaDistribution;
+import static io.staminaframework.runtime.starter.it.StaminaOptions.staminaDistribution;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.ops4j.pax.exam.CoreOptions.*;

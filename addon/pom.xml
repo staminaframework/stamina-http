@@ -31,6 +31,11 @@
     <packaging>pom</packaging>
     <url>http://staminaframework.io/stamina-http</url>
 
+    <description>
+        Stamina HTTP brings an HTTP implementation (using Jetty),
+        which supports OSGi HttpService specification.
+    </description>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.felix</groupId>
